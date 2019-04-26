@@ -1,0 +1,125 @@
+
+alias ef="export -f"
+
+define_function() {
+  name="$1"
+  shift
+  eval "$name() { $@ \"\$@\"; }"
+  export -f "$name"
+}
+alias defn=define_function
+
+export_assign() {
+  key="$1"
+  shift
+  eval "export $key=\"$@\""
+}
+alias ea=export_assign
+
+append_to() {
+  var="$1"
+  shift
+  for arg in "$@"; do
+    if [ -d "$arg" ]; then
+
+      cur_val="$(eval "echo \$$var")"
+
+      new_val="$arg"
+      if [ -n "$cur_val" ]; then
+        new_val="$cur_val:$arg"
+      fi
+
+      export-assign "$var" "$new_val"
+
+    else
+      debug "Not appending '$arg' to '\$$var'; '$arg' not a directory"
+    fi
+  done
+}
+
+prepend_to() {
+  var="$1"
+  shift
+  for arg in "$@"; do
+    if [ -d "$arg" ]; then
+
+      cur_val="$(eval "echo \$$var")"
+
+      new_val="$arg"
+      if [ -n "$cur_val" ]; then
+        new_val="$arg:$cur_val"
+      fi
+
+      export-assign "$var" "$new_val"
+    else
+      debug "Not prepending '$arg' to '\$$var'; '$arg' not a directory"
+    fi
+  done
+}
+
+prepend_to_path() {
+  prepend_to PATH "$@"
+}
+
+defn ptp prepend_to_path
+
+append_to_path() {
+  append_to PATH "$@"
+}
+
+defn atp append_to_path
+
+remove_from() {
+  var="$1"
+  shift
+
+  echo "Removing from \$$var:"
+
+  for arg in "$@"; do
+    prev="$(eval "echo $(echo "\$$var")")"
+    new_val="$(echo "$prev" | splt : | grep -v "$arg")"
+
+    comm -23 <(echo "$prev" | splt : | sort | dbl) <(echo "$new_val" | sort) | indent
+    export-assign "$var" "$(echo "$new_val" | joyn :)"
+  done
+}
+
+remove_from_path() {
+  remove_from PATH "$@"
+}
+
+defn rfp remove_from_path
+
+dedupe_path_var() {
+  for var in "$@"; do
+    var_contents="$(eval "echo \"\$$var\"")"
+
+    # Dedupe variable `var`, e.g. on re-source-ing this .bashrc.
+    path_segments=$(echo "$var_contents" | splt :)
+    num_path_segments=$(echo "$path_segments" | wc -l | tr -d ' ')
+
+    sorted_unique_path_segments=$(echo "$var_contents" | splt : | sort | uniq)
+    num_unique_num_path_segments=$(echo "$sorted_unique_path_segments" | wc -l | tr -d ' ')
+
+    if [ $num_path_segments -ne $num_unique_num_path_segments ]; then
+
+      debug "Deduping \$$var variable from $num_path_segments segments down to $num_unique_num_path_segments..."
+
+      debug "Before \$$var: $var_contents"
+      val="$(echo $path_segments | dedupe | joyn :)"
+      if [ "$val" ]; then
+        export-assign "$var" "$val"
+      fi
+      debug "After \$$var: $(eval "echo \"\$$var\"")"
+    fi
+  done
+}
+
+strip_file_prefixes() {
+  args=()
+  for arg in "$@"; do
+    args+=("${arg#file:}")
+  done
+}
+export -f strip_file_prefixes
+
