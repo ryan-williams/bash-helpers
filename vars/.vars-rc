@@ -29,7 +29,7 @@ append_to() {
         new_val="$cur_val:$arg"
       fi
 
-      export-assign "$var" "$new_val"
+      export_assign "$var" "$new_val"
 
     else
       debug "Not appending '$arg' to '\$$var'; '$arg' not a directory"
@@ -50,7 +50,7 @@ prepend_to() {
         new_val="$arg:$cur_val"
       fi
 
-      export-assign "$var" "$new_val"
+      export_assign "$var" "$new_val"
     else
       debug "Not prepending '$arg' to '\$$var'; '$arg' not a directory"
     fi
@@ -80,7 +80,7 @@ remove_from() {
     new_val="$(echo "$prev" | splt : | grep -v "$arg")"
 
     comm -23 <(echo "$prev" | splt : | sort | dbl) <(echo "$new_val" | sort) | indent
-    export-assign "$var" "$(echo "$new_val" | joyn :)"
+    export_assign "$var" "$(echo "$new_val" | joyn :)"
   done
 }
 
@@ -108,7 +108,7 @@ dedupe_path_var() {
       debug "Before \$$var: $var_contents"
       val="$(echo $path_segments | dedupe | joyn :)"
       if [ "$val" ]; then
-        export-assign "$var" "$val"
+        export_assign "$var" "$val"
       fi
       debug "After \$$var: $(eval "echo \"\$$var\"")"
     fi
