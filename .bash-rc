@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-alias bak-ifs=". toggle-ifs"
-alias ifs=". toggle-ifs"
-
-alias xt='exit'
+alias xt=exit
 
 alias ma=mk-alias
 alias mka=mk-alias
+defn ua unalias
 
 # Sourcing
 alias resource="unalias resource; source ~/.bashrc"
@@ -18,12 +16,10 @@ alias rsrs="source ~/.bashrc"
 
 export dn=/dev/null
 
-append_to PKG_CONFIG_PATH "$HOME/lib" "$HOME/lib64" "$HOME/anaconda/lib"
+append_to PKG_CONFIG_PATH "$HOME/lib" "$HOME/lib64"
 
 defn rmf rm -f
 defn rmrf rm -rf
-
-defn ua unalias
 
 defn dfh df -h
 alias cfgh="./configure --prefix=$HOME && make && make install"
@@ -37,4 +33,39 @@ alias cv="cat -v"
 
 defn cpr cp -r
 
-alias fom=factor-out-helpers-module
+err() {
+	echo "$@" >&2
+}
+export -f err
+
+die() {
+	err "$1"
+	shift
+	return "${1:-1}"
+}
+export -f die
+
+toggle-ifs() {
+    verbose=
+    if [ $# -gt 0 -a "$1" == "-v" ]; then
+      verbose=1
+    fi
+
+    if [ "$IFS" == $'\n' ]; then
+      if [ -z "$OLD_IFS" ]; then
+        echo "ERROR: No OLD_IFS set" >&2
+        exit 1
+      else
+        export IFS="$OLD_IFS"
+        echo "\$IFS restored"
+      fi
+    else
+      export OLD_IFS="$IFS"
+      export IFS=$'\n'
+      echo "\$IFS now \$'\\n'"
+    fi
+
+}
+export -f toggle-ifs
+alias bak-ifs="toggle-ifs"
+alias ifs="toggle-ifs"

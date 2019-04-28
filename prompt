@@ -11,7 +11,6 @@
 #       echo "they're just not sure"
 #   fi
 
-
 while true; do
     echo -n "$@? [Y/n] " 1>&2
     read line
