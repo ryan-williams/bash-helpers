@@ -4,6 +4,10 @@ alias ef="export -f"
 define_function() {
   name="$1"
   shift
+  if [ $# -eq 0 ]; then
+    echo "Usage: $0 <alias name> <aliased function> [args...]" >&2
+    return 1
+  fi
   eval "$name() { $@ \"\$@\"; }"
   export -f "$name"
 }
