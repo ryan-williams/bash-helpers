@@ -14,7 +14,7 @@ export_assign() {
   shift
   eval "export $key=\"$@\""
 }
-alias ea=export_assign
+defn ea export_assign
 
 append_to() {
   local var="$1"
@@ -57,16 +57,10 @@ prepend_to() {
   done
 }
 
-prepend_to_path() {
-  prepend_to PATH "$@"
-}
-
+defn prepend_to_path prepend_to PATH
 defn ptp prepend_to_path
 
-append_to_path() {
-  append_to PATH "$@"
-}
-
+defn append_to_path append_to PATH
 defn atp append_to_path
 
 remove_from() {
@@ -84,10 +78,7 @@ remove_from() {
   done
 }
 
-remove_from_path() {
-  remove_from PATH "$@"
-}
-
+defn remove_from_path remove_from PATH
 defn rfp remove_from_path
 
 dedupe_path_var() {
