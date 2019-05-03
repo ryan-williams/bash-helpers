@@ -47,7 +47,7 @@ die() {
 }
 export -f die
 
-toggle-ifs() {
+toggle_ifs() {
     verbose=
     if [ $# -gt 0 -a "$1" == "-v" ]; then
       verbose=1
@@ -68,6 +68,6 @@ toggle-ifs() {
     fi
 
 }
-export -f toggle-ifs
-alias bak-ifs="toggle-ifs"
-alias ifs="toggle-ifs"
+export -f toggle_ifs
+alias bak-ifs=toggle_ifs
+alias ifs="toggle_ifs"

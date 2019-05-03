@@ -10,21 +10,21 @@ define_function() {
 alias defn=define_function
 
 export_assign() {
-  key="$1"
+  local key="$1"
   shift
   eval "export $key=\"$@\""
 }
 alias ea=export_assign
 
 append_to() {
-  var="$1"
+  local var="$1"
   shift
   for arg in "$@"; do
     if [ -d "$arg" ]; then
 
-      cur_val="$(eval "echo \$$var")"
+      local cur_val="$(eval "echo \$$var")"
 
-      new_val="$arg"
+      local new_val="$arg"
       if [ -n "$cur_val" ]; then
         new_val="$cur_val:$arg"
       fi
@@ -38,7 +38,7 @@ append_to() {
 }
 
 prepend_to() {
-  var="$1"
+  local var="$1"
   shift
   for arg in "$@"; do
     if [ -d "$arg" ]; then
