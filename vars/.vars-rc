@@ -8,6 +8,7 @@ define_function() {
     echo "Usage: $0 <alias name> <aliased function> [args...]" >&2
     return 1
   fi
+  unalias "$name" &>/dev/null
   eval "$name() { $@ \"\$@\"; }"
   export -f "$name"
 }
