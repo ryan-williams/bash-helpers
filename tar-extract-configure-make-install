@@ -3,7 +3,9 @@
 tar="$1"
 shift
 
+echo "Untar: $tar"
 tar xf "$tar"
 cd-last-updated
+echo "dir: $PWD"
 
-./configure --prefix="$HOME" "$@" && make && make install
+./configure --prefix="$HOME" "$@" && echo "configured" && make && echo "made" && make install
