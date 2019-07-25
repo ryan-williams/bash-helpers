@@ -5,7 +5,8 @@ shift
 
 echo "Untar: $tar"
 tar xf "$tar"
-cd-last-updated
+dir="$(tar tf "$tar" | head -n 1)"
+cd "$dir"
 echo "dir: $PWD"
 
 ./configure --prefix="$HOME" "$@" && echo "configured" && make && echo "made" && make install
