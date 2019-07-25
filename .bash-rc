@@ -25,7 +25,11 @@ defn rmrf rm -rf
 
 defn dfh df -h
 alias cfgh="./configure --prefix=$HOME && make && make install"
-alias cmi="./configure --prefix=$HOME && make && make install"
+cmi() {
+  ./configure --prefix=$HOME "$@" && make && make install
+}
+export -f cmi
+
 defn tcmi tar-extract-configure-make-install
 
 defn m man

@@ -6,4 +6,4 @@ shift
 tar xf "$tar"
 cd-last-updated
 
-./configure --prefix="$SHOME" "$@" && make && make install
+./configure --prefix="$HOME" "$@" && make && make install
