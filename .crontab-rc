@@ -1,0 +1,3 @@
+alias cte="crontab -e"
+alias cti="crontab -i"
+alias ctl="crontab -l"
