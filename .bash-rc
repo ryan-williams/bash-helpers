@@ -34,7 +34,9 @@ defn tcmi tar-extract-configure-make-install
 
 defn m man
 
-alias c=cat
+alias c=cd
+
+alias s=cat
 alias cv="cat -v"
 
 defn cpr cp -r
