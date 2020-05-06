@@ -34,7 +34,7 @@ defn tcmi tar-extract-configure-make-install
 
 defn m man
 
-alias c=cd
+alias c=pushd
 
 alias s=cat
 alias cv="cat -v"
