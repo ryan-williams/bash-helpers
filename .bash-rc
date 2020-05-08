@@ -34,7 +34,15 @@ defn tcmi tar-extract-configure-make-install
 
 defn m man
 
-alias c=pushd
+cd_cat() {
+  if [ -d "$1" ]; then
+    pushd "$1"
+  else
+    cat "$@"
+  fi
+}
+export -f cd_cat
+defn c cd_cat
 
 alias s=cat
 alias cv="cat -v"
