@@ -35,7 +35,9 @@ defn tcmi tar-extract-configure-make-install
 defn m man
 
 cd_cat() {
-  if [ -d "$1" ]; then
+  if [ $# -eq 0 ]; then
+    pushd ~
+  elif [ -d "$1" ]; then
     pushd "$1"
   else
     cat "$@"
