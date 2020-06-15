@@ -87,3 +87,13 @@ toggle_ifs() {
 export -f toggle_ifs
 alias bak-ifs=toggle_ifs
 alias ifs="toggle_ifs"
+
+pswd() {
+  if [ $# -eq 0 ]; then
+    num=30
+  else
+    num="$1"; shift
+  fi
+  cat /dev/urandom | perl -pe 's/[^0-9a-zA-Z]//g' | head -c "$num"
+}
+export -f pswd
