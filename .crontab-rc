@@ -12,3 +12,10 @@ crontab_rm() {
 export -f crontab_rm
 defn cbr crontab_rm
 defn ctr crontab_rm
+
+crontab_clear() {
+  crontab -l
+  echo '' | crontab
+}
+export -f crontab_clear
+defn cbc crontab_clear
