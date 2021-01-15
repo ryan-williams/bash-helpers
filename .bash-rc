@@ -97,3 +97,5 @@ pswd() {
   cat /dev/urandom | perl -pe 's/[^0-9a-zA-Z]//g' | head -c "$num"
 }
 export -f pswd
+
+export HISTCONTROL=ignorespace
