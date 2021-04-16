@@ -86,6 +86,9 @@ remove_from() {
 defn remove_from_path remove_from PATH
 defn rfp remove_from_path
 
+defn remove_from_pythonpath remove_from PYTHONPATH
+defn rfpp remove_from_pythonpath
+
 dedupe_path_var() {
   for var in "$@"; do
     var_contents="$(eval "echo \"\$$var\"")"
