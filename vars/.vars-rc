@@ -93,23 +93,17 @@ dedupe_path_var() {
   for var in "$@"; do
     var_contents="$(eval "echo \"\$$var\"")"
 
-    # Dedupe variable `var`, e.g. on re-source-ing this .bashrc.
-    path_segments=$(echo "$var_contents" | splt :)
-    num_path_segments=$(echo "$path_segments" | wc -l | tr -d ' ')
+    num_path_segments_before="$(echo "$var_contents" | tr : '\n' | wc -l | tr -d ' ')"
+    val="$(echo "$var_contents" | tr : '\n' | nl | sort -uk2 | sort -nk1 | cut -f2- | tr '\n' :)"
+    num_path_segments_after="$(echo "$val" | tr : '\n' | wc -l | tr -d ' ')"
 
-    sorted_unique_path_segments=$(echo "$var_contents" | splt : | sort | uniq)
-    num_unique_num_path_segments=$(echo "$sorted_unique_path_segments" | wc -l | tr -d ' ')
-
-    if [ $num_path_segments -ne $num_unique_num_path_segments ]; then
-
-      debug "Deduping \$$var variable from $num_path_segments segments down to $num_unique_num_path_segments..."
-
-      debug "Before \$$var: $var_contents"
-      val="$(echo $path_segments | dedupe | joyn :)"
-      if [ "$val" ]; then
-        export_assign "$var" "$val"
-      fi
-      debug "After \$$var: $(eval "echo \"\$$var\"")"
+    if [ "$num_path_segments_before" != "$num_path_segments_after" ]; then
+      debug "Deduping \$$var variable from $num_path_segments_before segments down to $num_path_segments_after"
+      debug "\$$var before: $var_contents"
+      export_assign "$var" "$val"
+      debug "\$$var after: $(eval "echo \"\$$var\"")"
+    else
+      debug "\$$var: $num_path_segments_before unique segments, nothing de-duped"
     fi
   done
 }
@@ -121,4 +115,3 @@ strip_file_prefixes() {
   done
 }
 export -f strip_file_prefixes
-
