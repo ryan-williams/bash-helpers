@@ -89,6 +89,8 @@ defn rfp remove_from_path
 defn remove_from_pythonpath remove_from PYTHONPATH
 defn rfpp remove_from_pythonpath
 
+# Arguments: one or more environment variable names (e.g. "PATH") that contain a ":"-delimited list of paths
+# Result: each variable's list of paths is deduped (preserving order).
 dedupe_path_var() {
   for var in "$@"; do
     var_contents="$(eval "echo \"\$$var\"")"
