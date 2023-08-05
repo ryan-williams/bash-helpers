@@ -36,7 +36,7 @@ COPY_BINARIES = [ 'pbcopy', 'xclip', 'clip', ]
 
 @click.command(no_args_is_help=True, help='Format a command and its output to markdown, either in a `bash`-fence or <details> block, and copy it to the clipboard:')
 @click.option('-C', '--no-copy', is_flag=True, help=f'Disable copying output to clipboard (normally uses first available executable from {COPY_BINARIES}')
-@click.option('-f', '--fence', 'fence_level', count=True, help='Pass 0-3x to configure output style: 0x: print output lines, prepended by "# ", in a `bash`-fence block; 1x: print a "```bash" fence block including the <command> and commented output lines; 2x: print a bash-fenced command followed by plain-fenced output lines; 3x: print a <details/> block, with command <summary/> and collapsed output lines in a plain fence.')
+@click.option('-f', '--fence', 'fence_level', count=True, help='Pass 0-3x to configure output style: 0x: print output lines, prepended by "# "; 1x: print a "```bash" fence block including the <command> and commented output lines; 2x: print a bash-fenced command followed by plain-fenced output lines; 3x: print a <details/> block, with command <summary/> and collapsed output lines in a plain fence.')
 @click.argument('command', nargs=-1)
 def main(no_copy, fence_level, command):
     lines = process.lines(*command, log=None)
@@ -57,8 +57,7 @@ def main(no_copy, fence_level, command):
                 log(line)
 
     if not fence_level:
-        with fence('bash', log=log):
-            print_commented_lines()
+        print_commented_lines()
     elif fence_level == 1:
         with fence('bash', log=log):
             log(cmd_str)
