@@ -49,7 +49,7 @@ def main(no_copy, fence_level, command):
 
     def print_commented_lines():
         for line in lines:
-            log(f'# {line}')
+            log(f'# {line}' if line else '#')
 
     def print_fenced_lines():
         with fence(log=log):
