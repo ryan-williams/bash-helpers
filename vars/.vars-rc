@@ -89,15 +89,21 @@ defn rfp remove_from_path
 defn remove_from_pythonpath remove_from PYTHONPATH
 defn rfpp remove_from_pythonpath
 
+count_lines() {
+  # `echo -n 123 | wc -l` return 0, `wc` only counts newline chars.
+  # This counts the final line, even if it doesn't end in a newline.
+  cat | sed -n = | tail -n1 | awk '{print $1}'
+}
+
 # Arguments: one or more environment variable names (e.g. "PATH") that contain a ":"-delimited list of paths
 # Result: each variable's list of paths is deduped (preserving order).
 dedupe_path_var() {
   for var in "$@"; do
     var_contents="$(eval "echo \"\$$var\"")"
 
-    num_path_segments_before="$(echo "$var_contents" | tr : '\n' | wc -l | tr -d ' ')"
-    val="$(echo "$var_contents" | tr : '\n' | nl | sort -uk2 | sort -nk1 | cut -f2- | tr '\n' :)"
-    num_path_segments_after="$(echo "$val" | tr : '\n' | wc -l | tr -d ' ')"
+    num_path_segments_before="$(echo -n "$var_contents" | tr : '\n' | count_lines)"
+    val="$(echo -n "$var_contents" | tr : '\n' | nl | sort -uk2 | sort -nk1 | cut -f2- | sed 's/ *$//' | tr '\n' :)"
+    num_path_segments_after="$(echo -n "$val" | tr : '\n' | count_lines)"
 
     if [ "$num_path_segments_before" != "$num_path_segments_after" ]; then
       debug "Deduping \$$var variable from $num_path_segments_before segments down to $num_path_segments_after"
