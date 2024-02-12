@@ -23,6 +23,25 @@ export dn=/dev/null
 
 append_to PKG_CONFIG_PATH "$HOME/lib" "$HOME/lib64"
 
+mv_createdir() {
+    last="${@: -1}"
+    rest="${@:1:$#-1}"
+    if [ "${last: -1}" == "/" ]; then
+        dstdir="$last"
+    else
+        dstdir="$(dirname "$last")"
+    fi
+    echo "last=$last" >&2
+    echo "dstdir=$dstdir" >&2
+    if [ "$dstdir" != "$last" ]; then
+        echo "Making directory $dstdir" >&2
+        mkdir -p "$dstdir"
+    fi
+    mv "$@"
+}
+export -f mv_createdir
+defn mvc mv_createdir
+
 defn rmf rm -f
 defn rmrf rm -rf
 
