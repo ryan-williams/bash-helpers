@@ -123,3 +123,9 @@ strip_file_prefixes() {
   done
 }
 export -f strip_file_prefixes
+
+echo_path_split() {
+  echo "${1:-$PATH}" | tr : '\n'
+}
+export -f echo_path_split
+defn epsp echo_path_split
