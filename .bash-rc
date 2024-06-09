@@ -129,5 +129,7 @@ defn bmff bash-markdown-fence.py -ff --
 defn bmfff bash-markdown-fence.py -fff --
 
 defn wn watch -n
+defn w2 watch -n2
 defn w5 watch -n5
+defn wn2 watch -n2
 defn wn5 watch -n5
