@@ -20,6 +20,14 @@ alias rsrs="source ~/.bashrc"
 alias rbp="source ~/.bash_profile"
 alias rsbp="source ~/.bash_profile"
 
+pull_remote_source() {
+    pushd ~/.rc
+    git pull --rebase && git submodule update --init --recursive && source ~/.bashrc
+    popd
+}
+alias prs=pull_remote_source
+alias rsrr=pull_remote_source
+
 export dn=/dev/null
 
 append_to PKG_CONFIG_PATH "$HOME/lib" "$HOME/lib64"
