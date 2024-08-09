@@ -5,7 +5,7 @@ from subprocess import PIPE, Popen
 from typing import Callable
 
 import click
-from utz import process
+from utz import process  # Requires utz>=0.7
 
 
 Log = Callable[[str], None]
@@ -39,7 +39,7 @@ COPY_BINARIES = [ 'pbcopy', 'xclip', 'clip', ]
 @click.option('-f', '--fence', 'fence_level', count=True, help='Pass 0-3x to configure output style: 0x: print output lines, prepended by "# "; 1x: print a "```bash" fence block including the <command> and commented output lines; 2x: print a bash-fenced command followed by plain-fenced output lines; 3x: print a <details/> block, with command <summary/> and collapsed output lines in a plain fence.')
 @click.argument('command', nargs=-1)
 def main(no_copy, fence_level, command):
-    lines = process.lines(*command, log=None)
+    lines = process.lines(*command, log=None, both=True, err_ok=True)
     cmd_str = shlex.join(command)
 
     out_lines = []
