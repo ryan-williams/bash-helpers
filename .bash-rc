@@ -130,11 +130,6 @@ export -f pswd
 
 export HISTCONTROL=ignorespace
 
-defn bm bash-markdown-fence.py --
-defn bmf bash-markdown-fence.py -f --
-defn bmff bash-markdown-fence.py -ff --
-defn bmfff bash-markdown-fence.py -fff --
-
 defn wn watch -n
 defn w2 watch -n2
 defn w5 watch -n5
