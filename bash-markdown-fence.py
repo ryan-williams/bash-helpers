@@ -2,13 +2,13 @@
 import shlex
 from contextlib import contextmanager
 from subprocess import PIPE, Popen
-from typing import Callable
+from typing import Callable, Tuple
 
 import click
 from utz import process  # Requires utz>=0.7
 
 
-Log = Callable[[str], None]
+Log = Callable[[*str], None]
 
 
 @contextmanager
