@@ -12,7 +12,9 @@ define_function() {
   eval "$name() { $@ \"\$@\"; }"
   export -f "$name"
 }
-alias defn=define_function
+defn() {
+    define_function "$@"
+}
 
 export_assign() {
   local key="$1"
