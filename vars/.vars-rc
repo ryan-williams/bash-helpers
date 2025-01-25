@@ -1,6 +1,12 @@
 
 alias ef="export -f"
 
+debug() {
+  if [ -n "$VERBOSE" ] || [ -n "$DEBUG" ]; then
+    echo $@
+  fi
+}
+
 define_function() {
   name="$1"
   shift
@@ -13,7 +19,7 @@ define_function() {
   export -f "$name"
 }
 defn() {
-    define_function "$@"
+  define_function "$@"
 }
 
 export_assign() {
