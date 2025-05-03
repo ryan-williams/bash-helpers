@@ -132,6 +132,7 @@ export -f pswd
 export HISTCONTROL=ignorespace
 
 alias wn="watch -n"
+alias w1="watch -n1"
 alias w2="watch -n2"
 alias w3="watch -n3"
 alias w5="watch -n5"
