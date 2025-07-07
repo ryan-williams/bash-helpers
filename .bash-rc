@@ -139,3 +139,21 @@ alias w5="watch -n5"
 alias wn2="watch -n2"
 alias wn3="watch -n3"
 alias wn5="watch -n5"
+
+set_initial_dir() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: ${FUNCNAME[0]} <dir>" >&2
+    return 1
+  fi
+  local bash_profile="$HOME/.bash_profile"
+  if ! [ -e "$bash_profile" ]; then
+    if [ -e "$HOME/.bashrc" ]; then
+      echo '. "$HOME/.bashrc"' > "$bash_profile"
+    else
+      echo "No .bash_profile or .bashrc found in $HOME" >&2
+      return 1
+    fi
+  fi
+  echo "cd \"\$HOME/$1\"" >> "$bash_profile"
+}
+defn sid set_initial_dir
