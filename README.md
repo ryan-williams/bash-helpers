@@ -5,10 +5,10 @@ Misc aliases and scripts related to Bash vars and built-ins; part of [runsascode
 ```bash
 bash-markdown-fence.py
 # Usage: bash-markdown-fence.py [OPTIONS] [COMMAND]...
-# 
+#
 #   Format a command and its output to markdown, either in a `bash`-fence or
 #   <details> block, and copy it to the clipboard:
-# 
+#
 # Options:
 #   -C, --no-copy  Disable copying output to clipboard (normally uses first
 #                  available executable from ['pbcopy', 'xclip', 'clip']
@@ -25,7 +25,7 @@ bash-markdown-fence.py
 Examples, using the command `seq 5`:
 
 ### `bm seq 5`
-This prints the output from `seq 5`, prefixed with `#&nbsp;` to simulate Bash comments (for inclusion in a `bash`-"fence" block): 
+This prints the output from `seq 5`, prefixed with `#&nbsp;` to simulate Bash comments (for inclusion in a `bash`-"fence" block):
 ```bash
 # 1
 # 2
@@ -35,7 +35,7 @@ This prints the output from `seq 5`, prefixed with `#&nbsp;` to simulate Bash co
 ```
 
 ### `bmf seq 5`
-Passing the `-f`/`--fence` flag once includes the command in the `bash`-fence: 
+Passing the `-f`/`--fence` flag once includes the command in the `bash`-fence:
 ```bash
 seq 5
 # 1
