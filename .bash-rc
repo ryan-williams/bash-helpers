@@ -21,6 +21,9 @@ alias rsbp="source ~/.bash_profile"
 
 alias hshr="hash -r"
 
+alias ppa='echo $PATH | sp:'
+alias ppt='echo $PATH | sp:'
+
 pull_remote_source() {
     pushd ~/.rc || return 1
     git pull --rebase && git submodule update --init --recursive && source "$HOME/.bashrc"
