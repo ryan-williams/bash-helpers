@@ -160,3 +160,11 @@ set_initial_dir() {
   echo "cd \"\$HOME/$1\"" >> "$bash_profile"
 }
 defn sid set_initial_dir
+
+# Initialize direnv if available
+if which direnv &>/dev/null 2>&1; then
+    eval "$(direnv hook bash)"
+    alias dea="direnv allow"
+    alias der="direnv reload"
+    alias des="direnv status"
+fi
