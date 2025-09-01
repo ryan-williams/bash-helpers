@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""
+Strip Claude Code formatting pipes and smart-unwrap lines.
+
+Removes leading "│" and trailing "│" from lines, and intelligently unwraps lines
+that were wrapped by Claude Code's formatting while preserving intentional newlines.
+"""
+
+import sys
+import re
+
+def process_claude_code_text(text):
+    lines = text.split('\n')
+    processed = []
+
+    for i, line in enumerate(lines):
+        # Strip leading and trailing pipes with any surrounding spaces
+        cleaned = re.sub(r'^\s*│\s*', '', line)
+        cleaned = re.sub(r'\s*│\s*$', '', cleaned)
+
+        # Skip completely empty lines that resulted from pipe-only lines
+        if not cleaned and line.strip() == '│':
+            continue
+
+        processed.append(cleaned)
+
+    # Now handle unwrapping - join lines that were wrapped by Claude Code
+    result = []
+    i = 0
+    while i < len(processed):
+        current = processed[i]
+
+        # Look ahead to see if we should join with following lines
+        joined_line = current
+        j = i + 1
+
+        while j < len(processed):
+            next_line = processed[j]
+
+            # Stop joining if we hit an empty line (paragraph break)
+            if not next_line.strip():
+                break
+
+            # Stop joining if we hit what looks like a new paragraph or list item
+            bullet_pattern = r'^[\s]*[-•*▪▸⁃◦‣⁌⁍][\s]'
+            numbered_pattern = r'^[\s]*\d+[.)\]][\s]'
+
+            if re.match(bullet_pattern, next_line) or re.match(numbered_pattern, next_line):
+                break
+
+            # Stop joining if the current accumulated line ends with sentence-ending punctuation
+            # AND the next line starts with a capital letter (likely new sentence)
+            if joined_line.rstrip() and joined_line.rstrip()[-1] in '.!?':
+                if next_line.lstrip() and next_line.lstrip()[0].isupper():
+                    break
+
+            # Otherwise, join the lines
+            joined_line = joined_line.rstrip() + ' ' + next_line.lstrip()
+            j += 1
+
+        result.append(joined_line)
+        i = j if j > i + 1 else i + 1
+
+    # Detect and preserve intentional blank lines (multiple newlines in original)
+    final_result = []
+    for i, line in enumerate(result):
+        final_result.append(line)
+
+        # If we have consecutive empty lines in the processed result,
+        # it likely indicates an intentional paragraph break
+        if i + 1 < len(result) and not line and not result[i + 1]:
+            # Keep the blank line
+            pass
+
+    return '\n'.join(final_result)
+
+if __name__ == '__main__':
+    # Read from stdin
+    text = sys.stdin.read()
+    print(process_claude_code_text(text))

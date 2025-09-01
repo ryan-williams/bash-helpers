@@ -168,3 +168,5 @@ if which direnv &>/dev/null 2>&1; then
     alias der="direnv reload"
     alias des="direnv status"
 fi
+
+alias ccsp=claude-code-strip-pipes
