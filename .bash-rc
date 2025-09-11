@@ -170,3 +170,12 @@ if which direnv &>/dev/null 2>&1; then
 fi
 
 alias ccsp=claude-code-strip-pipes
+
+alias eg="env | grep"
+alias ag="alias | grep"
+
+env_alias_grep() {
+  (env; alias) | grep "$@"
+}
+export -f env_alias_grep
+defn eag env_alias_grep
