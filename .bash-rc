@@ -171,6 +171,8 @@ fi
 
 alias ccsp=claude-code-strip-pipes
 
+defn lhx last-hex-byte
+
 alias eg="env | grep"
 alias ag="alias | grep"
 
